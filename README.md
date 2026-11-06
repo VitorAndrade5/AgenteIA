@@ -1,4 +1,4 @@
-#  Secretária AI - Agente Virtual Inteligente
+#  SecretárIA - Agente Virtual Inteligente
 
 Um agente de inteligência artificial desenhado para atuar como secretária virtual, responsável pela gestão de agendamentos e automação de comunicações por e-mail.
 
