@@ -1,11 +1,17 @@
-import { FunctionResponse, GoogleGenAI } from "@google/genai";
+import { GoogleGenAI } from "@google/genai";
+
+import {allFunctions as calendarFunctions} from "./tools/calendar.js";
+import {allfunctions as emailFunctions} from "./tools/email.js";
+
 
 const ai = new GoogleGenAI();
+
+const allfunctions = calendarFunctions.concat(emailFunctions);
 
 const contents = [
     {
         role: "user",
-        parts: [{ text: "Qual a temperatura no Brasil?"}]    
+        parts: [{ text: "mande uma mensagem de aniversario bonita para a minha mãe. O contato 'mãe'"}]    
     }
 ];
 
@@ -13,39 +19,11 @@ var response = await ai.models.generateContent ({
     model: "gemini-3.8-flash",
     contents: contents,
     config: {
-        tools: [
-            {
-                functionDeclarations: [
-                    {name:"getTodayDate", description: "retorna a data de hoje no formato yyyy-mm-dd"},
-                    
-                    {
-                        name: "getCountryTemperature",
-                     description: "Retorna a temperatura do país indicado",
-                     parameters: {
-                        type:"OBJECT",
-                        properties: {
-                            country: {
-                                type: "STRING",
-                                description: "País para qual se quer saber a temperatura"
-                            },
-                            isCelsius: {
-                                type: "BOOLEAN",
-                                description: "Se devemos retornar a temperatura em celsius ou não (padrão é true)"
-                            }
-                        },
-                        required: ["country", "isCelsius"]
-                     },
-
-                    }
-                ]
-            }
-        ]
+        tools: [{functionDeclarations: allfunctions}]
     }
-
-
 });
 
-console.log(response.candidates[0].content.parts[0].functionCall)
+console.log(response.candidates[0].content.parts[0])
 
 // contents.push(response.candidates[0].content);
 
