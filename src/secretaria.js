@@ -27,9 +27,15 @@ var response = await ai.models.generateContent ({
                             country: {
                                 type: "STRING",
                                 description: "País para qual se quer saber a temperatura"
+                            },
+                            isCelsius: {
+                                type: "BOOLEAN",
+                                description: "Se devemos retornar a temperatura em celsius ou não (padrão é true)"
                             }
-                        }
-                     }       
+                        },
+                        required: ["country", "isCelsius"]
+                     },
+
                     }
                 ]
             }
@@ -39,7 +45,7 @@ var response = await ai.models.generateContent ({
 
 });
 
-console.log(response.candidates[0].content.parts)
+console.log(response.candidates[0].content.parts[0].functionCall)
 
 // contents.push(response.candidates[0].content);
 
